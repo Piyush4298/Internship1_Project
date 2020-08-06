@@ -33,7 +33,15 @@ def delete_user_by(db, name):
     db.commit()
 
 
-def current_db_info(db):
+def current_db_info(db, flag=0):
     cur = db.cursor()
-    cur.execute('select name,number from Contacts')
-    return cur.fetchall()
+    if flag == 1:
+        cur.execute('select name from Contacts')
+        return [name[0] for name in cur.fetchall()]
+    elif flag == 2:
+        cur.execute('select number from Contacts')
+        return [num[0] for num in cur.fetchall()]
+    else:
+        cur.execute('select * from Contacts')
+        return cur.fetchall()
+
