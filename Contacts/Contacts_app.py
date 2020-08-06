@@ -22,28 +22,14 @@ def show_menu():
     return choice
 
 
-def current_list(flag=0):
-    lst_of_both = cdc.current_db_info(db)
-    lst_of_names = lst_of_nums = list()
-    for i, j in lst_of_both:
-        lst_of_names.append(i)
-        lst_of_nums.append(j)
-    if flag == 0:
-        return lst_of_names
-    elif flag == 1:
-        return lst_of_nums
-    else:
-        return lst_of_both
-
-
 while choice != '6':
     choice = show_menu()
     if choice == '1':
         name = input('Enter name: ')
         number = int(input('Enter number: '))
-        if name in current_list():
+        if name in cdc.current_db_info(db, 1):
             print('Already in the contacts')
-        elif number in current_list(1):
+        elif number in cdc.current_db_info(db, 2):
             print('Number already in the list')
         else:
             cdc.add_user(db, name, number)
@@ -51,7 +37,7 @@ while choice != '6':
 
     elif choice == '2':
         con_to_be_deleted = input('Which contact to be deleted(enter its exact name): ')
-        if con_to_be_deleted not in current_list():
+        if con_to_be_deleted not in cdc.current_db_info(db, 1):
             print('No such contact exists in your Contacts')
         else:
             cdc.delete_user_by(db, con_to_be_deleted)
@@ -60,11 +46,11 @@ while choice != '6':
     elif choice == '3':
         edit_choice = input('What do u want to update(0 for name and 1 for number): ')
         con_to_be_edited = input('Enter contact to be edited:(enter exact name ) ')
-        if edit_choice == '1' and con_to_be_edited in current_list():
+        if edit_choice == '1' and con_to_be_edited in cdc.current_db_info(db, 1):
             new_num = input('Enter new number')
             cdc.update_user_number(db, con_to_be_edited, new_num)
             print('Contact edited successfully!!!!')
-        elif edit_choice == '0' and con_to_be_edited in current_list():
+        elif edit_choice == '0' and con_to_be_edited in cdc.current_db_info(db, 1):
             new_name = input('Enter new name')
             cdc.update_user_name(db, con_to_be_edited, new_name)
             print('Contact edited successfully!!!!')
@@ -74,13 +60,13 @@ while choice != '6':
 
     elif choice == '4':
         print('Your contact list :')
-        con_lst = current_list(2)
+        con_lst = cdc.current_db_info(db)
         for i, j in sorted(con_lst):
             print('Name: ', i, '| Number: ', j)
 
     elif choice == '5':
         con_to_be_searched = input('Enter Name or Number to be searched: ')
-        for name, number in current_list(2):
+        for name, number in cdc.current_db_info(db):
             if con_to_be_searched == name or con_to_be_searched == str(number):
                 print('Name: ', name, '| Number: ', number)
                 break
@@ -90,3 +76,4 @@ while choice != '6':
         break
     else:
         print('Invalid choice please choose from the MENU and try again!!!!!!!!')
+
