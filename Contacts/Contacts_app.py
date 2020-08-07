@@ -27,9 +27,9 @@ while choice != '6':
     if choice == '1':
         name = input('Enter name: ')
         number = int(input('Enter number: '))
-        if name in cdc.current_db_info(db, 1):
+        if (name,) in cdc.current_db_info(db, 1,name):
             print('Already in the contacts')
-        elif number in cdc.current_db_info(db, 2):
+        elif (number,) in cdc.current_db_info(db, 2,number):
             print('Number already in the list')
         else:
             cdc.add_user(db, name, number)
@@ -37,7 +37,7 @@ while choice != '6':
 
     elif choice == '2':
         con_to_be_deleted = input('Which contact to be deleted(enter its exact name): ')
-        if con_to_be_deleted not in cdc.current_db_info(db, 1):
+        if (con_to_be_deleted,) not in cdc.current_db_info(db, 1,con_to_be_deleted):
             print('No such contact exists in your Contacts')
         else:
             cdc.delete_user_by(db, con_to_be_deleted)
@@ -46,11 +46,11 @@ while choice != '6':
     elif choice == '3':
         edit_choice = input('What do u want to update(0 for name and 1 for number): ')
         con_to_be_edited = input('Enter contact to be edited:(enter exact name ) ')
-        if edit_choice == '1' and con_to_be_edited in cdc.current_db_info(db, 1):
+        if edit_choice == '1' and (con_to_be_edited,) in cdc.current_db_info(db, 1,con_to_be_edited):
             new_num = input('Enter new number')
             cdc.update_user_number(db, con_to_be_edited, new_num)
             print('Contact edited successfully!!!!')
-        elif edit_choice == '0' and con_to_be_edited in cdc.current_db_info(db, 1):
+        elif edit_choice == '0' and (con_to_be_edited,) in cdc.current_db_info(db, 1,con_to_be_edited):
             new_name = input('Enter new name')
             cdc.update_user_name(db, con_to_be_edited, new_name)
             print('Contact edited successfully!!!!')
@@ -76,4 +76,5 @@ while choice != '6':
         break
     else:
         print('Invalid choice please choose from the MENU and try again!!!!!!!!')
+
 
